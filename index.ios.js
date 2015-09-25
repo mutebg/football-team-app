@@ -18,6 +18,8 @@ var {
 var config = require('./source/config');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./source/components/menu');
+var { Icon } = require('react-native-icons');
+
 
 //page
 var Home = require('./source/components/home');
@@ -37,7 +39,12 @@ var MenuButton = React.createClass({
   render: function() {
     return (
       <TouchableOpacity onPress={this.handlePress.bind(this)} >
-        <Text style={this.props.style}>{this.props.children}</Text>
+          <Icon
+            name='material|menu'
+            size={32}
+            color='#ffffff'
+            style={styles.menuButton}
+          />
       </TouchableOpacity>
     );
   }
@@ -90,7 +97,7 @@ var App = React.createClass({
         touchToClose={this.state.touchToClose}>
         <View style={styles.main}>
           <View style={styles.header}>
-            <MenuButton style={styles.button}></MenuButton>
+            <MenuButton style={styles.menuButton}></MenuButton>
             <Text style={styles.headerTitle}>{this.state.pageTitle}</Text>
           </View>
           <View style={styles.content}>
@@ -128,12 +135,11 @@ var styles = StyleSheet.create({
   content: {
     flex: 1
   },
-  button: {
-    backgroundColor: 'white',
+  menuButton: {
     margin: 10,
-    height: 40,
-    width: 40,
-  }
+    height: 32,
+    width: 32,
+  },
 });
 
 AppRegistry.registerComponent('reactnativeproject', () => App);

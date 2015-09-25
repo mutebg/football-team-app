@@ -3,6 +3,8 @@
 const React = require('react-native');
 const Dimensions = require('Dimensions');
 const config = require('../config');
+var { Icon } = require('react-native-icons');
+
 
 const {
   StyleSheet,
@@ -12,6 +14,8 @@ const {
   Text,
   TouchableOpacity,
 } = React;
+
+
 
 const window = Dimensions.get('window');
 const uri = 'http://pickaface.net/includes/themes/clean/img/slide2.png';
@@ -33,12 +37,21 @@ var Menu = React.createClass({
   render: function() {
     var nav = this.state.menuItems.map( function(item) {
       var boundClick = this.handlePress.bind(this, item);
+      var iconName = 'material|' + item.icon;
       return(
-        <View style={styles.item}>
-          <TouchableOpacity onPress={boundClick} key={item.key}>
-            <Text style={styles.itemText}>{item.title}</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={boundClick} key={item.key}>
+          <View style={styles.item}>
+            <Icon
+              name={iconName}
+              size={24}
+              color='#656565'
+              style={styles.itemIcon}
+            />
+            <View style={styles.itemView}>
+              <Text style={styles.itemText}>{item.title}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       )
     }, this);
 
@@ -62,7 +75,7 @@ Menu.contextTypes = {
 var styles = StyleSheet.create({
   menu: {
     flex: 1,
-    backgroundColor: '#ccc',
+    backgroundColor: '#EAEAEA',
   },
   logoContainer: {
     margin: 20,
@@ -71,23 +84,30 @@ var styles = StyleSheet.create({
     width: 48,
     height: 48,
   },
-  name: {
-    position: 'absolute',
-    left: 70,
-    top: 20,
-  },
   item: {
     paddingTop: 15,
     paddingBottom: 15,
-    paddingLeft: 25,
+    paddingLeft: 15,
     paddingRight: 25,
-    borderTopColor: '#fff',
+    borderTopColor: '#DBDBDB',
     borderTopWidth: 1,
-
+    flexDirection: 'row',
   },
   itemText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '300',
+    color: '#6E6E6E',
+  },
+  itemView:{
+    flex: 1,
+    justifyContent: 'center',
+    height: 24,
+  },
+  itemIcon: {
+    width: 24,
+    height: 24,
+    flex: 0,
+    marginRight: 10,
   }
 });
 

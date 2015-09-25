@@ -2,11 +2,11 @@ var constants = {
   team_name: 'Нефтохимик',
   team_logo: 'http://img2.sportal.bg/uploads/statistics/team_logo_png/00000402.png',
   navigation: [
-    { title: 'Начало',    component: 'Table',   key: 'home'},
-    { title: 'Програма',  component: 'Fixtures',key: 'fixtures'},
-    { title: 'Класиране', component: 'Table',   key: 'table'},
-    { title: 'Новини',    component: 'Table',   key: 'news'},
-    { title: 'Спонсори',  component: 'Table',   key: 'sponsors'},
+    { title: 'Начало',    component: 'Table',   key: 'home',      icon: 'home'},
+    { title: 'Програма',  component: 'Fixtures',key: 'fixtures',  icon: 'assignment'},
+    { title: 'Класиране', component: 'Table',   key: 'table',     icon: 'receipt'},
+    { title: 'Новини',    component: 'Table',   key: 'news',      icon: 'developer-board'},
+    { title: 'Спонсори',  component: 'Table',   key: 'sponsors',  icon: 'gamepad'},
   ],
   standing_header: {
     team: 'Отбор',
