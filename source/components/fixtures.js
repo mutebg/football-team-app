@@ -39,6 +39,7 @@ var Fixtures = React.createClass({
             hour: item['gsx$date']['$t'].split('-')[1],
             result: item['gsx$result']['$t'],
             home: item['gsx$home']['$t'],
+            logo: item['gsx$logo']['$t'],
           }
           formatedData.push(row);
         });
@@ -142,8 +143,8 @@ var styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     flexDirection: 'row',
-    borderTopColor: '#ccc',
-    borderTopWidth: 1,
+    borderBottomColor: config.color.border,
+    borderBottomWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -155,11 +156,11 @@ var styles = StyleSheet.create({
   rightSide: {
     flexDirection: 'column',
     borderLeftWidth: 1,
-    borderLeftColor: '#ccc',
+    borderLeftColor: config.color.border,
     paddingLeft: 20,
     textAlign: 'center',
     flex: 0,
-    width: 100,
+    width: 96,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',

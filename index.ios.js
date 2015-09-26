@@ -11,13 +11,12 @@ var {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
-  Component
 } = React;
 
 var config = require('./source/config');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./source/components/menu');
+var MenuButton = require('./source/components/menubutton');
 var { Icon } = require('react-native-icons');
 
 
@@ -27,40 +26,15 @@ var News = require('./source/components/news');
 var Sponsors = require('./source/components/sponsors');
 var Fixtures = require('./source/components/fixtures');
 var Table = require('./source/components/table');
-
-var MenuButton = React.createClass({
-  handlePress: function(e) {
-    this.context.menuActions.toggle();
-    if (this.props.onPress) {
-      this.props.onPress(e);
-    }
-  },
-
-  render: function() {
-    return (
-      <TouchableOpacity onPress={this.handlePress.bind(this)} >
-          <Icon
-            name='material|menu'
-            size={32}
-            color='#ffffff'
-            style={styles.menuButton}
-          />
-      </TouchableOpacity>
-    );
-  }
-});
-
-MenuButton.contextTypes = {
-  menuActions: React.PropTypes.object.isRequired
-};
+var FenClub = require('./source/components/fenclub');
 
 
 var App = React.createClass({
   getInitialState: function() {
     return {
       touchToClose: true,
-      pageKey: 'table',
-      pageTitle: 'Класиране',
+      pageKey: config.navigation[0].key,
+      pageTitle: config.navigation[0].title,
     }
   },
 
@@ -79,7 +53,6 @@ var App = React.createClass({
         pageComponent: selectedItem.component,
       });
     }
-
   },
 
   render: function() {
@@ -90,7 +63,9 @@ var App = React.createClass({
       case 'table': page = <Table />; break;
       case 'fixtures': page = <Fixtures />; break;
       case 'sponsors': page = <Sponsors />; break;
+      case 'fenclub': page = <FenClub />; break;
     }
+    //page = <News />
 
     return (
       <SideMenu menu={<Menu changePage={this.changePage} />}
@@ -104,7 +79,6 @@ var App = React.createClass({
             { page }
           </View>
         </View>
-
       </SideMenu>
     );
   }
@@ -134,11 +108,6 @@ var styles = StyleSheet.create({
   },
   content: {
     flex: 1
-  },
-  menuButton: {
-    margin: 10,
-    height: 32,
-    width: 32,
   },
 });
 

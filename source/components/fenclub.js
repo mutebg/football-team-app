@@ -6,22 +6,16 @@ var {
   View,
 } = React;
 
-var config = require('../config');
-
-var Loading = React.createClass({
-
+var FenClub = React.createClass({
   render: function() {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
-          Зареждане
+          FenClub
         </Text>
-        <Image style={styles.logo}
-          source={{uri: config.app.logo }}/>
       </View>
     );
   },
-
 });
 
 var styles = StyleSheet.create({
@@ -31,14 +25,8 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontSize: 20,
-    color: config.color.primary,
-  },
-  logo: {
-    marginTop: 10,
-    width: 150,
-    height: 150,
+    fontSize: 30
   }
 });
 
-module.exports = Loading;
+module.exports = FenClub;

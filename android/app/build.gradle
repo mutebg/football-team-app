@@ -1,9 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        nafta {
+            keyAlias 'nafta'
+            keyPassword 'nafta'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-
     defaultConfig {
         applicationId "com.reactnativeproject"
         minSdkVersion 16

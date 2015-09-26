@@ -18,7 +18,6 @@ const {
 
 
 const window = Dimensions.get('window');
-const uri = 'http://pickaface.net/includes/themes/clean/img/slide2.png';
 
 var Menu = React.createClass({
   getInitialState: function() {
@@ -58,7 +57,12 @@ var Menu = React.createClass({
     return (
       <ScrollView style={styles.menu}>
         <View style={styles.logoContainer}>
-          <Image style={styles.logo} source={{ uri, }}/>
+          <Image style={styles.logo}
+            source={{uri: config.app.logo }}/>
+          <View style={styles.logoTitle}>
+            <Text>Нефтохимик</Text>
+            <Text>Бургас</Text>
+          </View>
         </View>
 
         { nav }
@@ -78,11 +82,21 @@ var styles = StyleSheet.create({
     backgroundColor: '#EAEAEA',
   },
   logoContainer: {
-    margin: 20,
+    padding: 15,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
   },
   logo: {
-    width: 48,
-    height: 48,
+    width: 60,
+    height: 60,
+    flex: 0,
+  },
+  logoTitle: {
+    flex: 1,
+    justifyContent: 'center',
+    height: 40,
+    textAlign: 'left',
+    paddingLeft: 15,
   },
   item: {
     paddingTop: 15,
