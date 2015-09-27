@@ -25,9 +25,13 @@ var { Icon } = require('react-native-icons');
 var Home = require('./source/components/home');
 var News = require('./source/components/news');
 var Sponsors = require('./source/components/sponsors');
-var Fixtures = require('./source/components/fixtures');
+var Games = require('./source/components/games');
 var Table = require('./source/components/table');
 var FenClub = require('./source/components/fenclub');
+var Settings = require('./source/components/settings');
+
+var NewsDetails = require('./source/components/newsdetails');
+var GameDetails = require('./source/components/gamedetails');
 
 class App extends Component {
 
@@ -63,11 +67,11 @@ class App extends Component {
       case 'home': page = <Home />; break;
       case 'news': page = <News />; break;
       case 'table': page = <Table />; break;
-      case 'fixtures': page = <Fixtures />; break;
+      case 'games': page = <Games />; break;
       case 'sponsors': page = <Sponsors />; break;
       case 'fenclub': page = <FenClub />; break;
+      case 'settings': page = <Settings />; break;
     }
-    //page = <News />
 
     return (
       <SideMenu menu={<Menu changePage={this.changePage.bind(this)} />}
@@ -84,63 +88,7 @@ class App extends Component {
       </SideMenu>
     );
   }
-
 }
-//
-// var App = React.createClass({
-//   getInitialState: function() {
-//     return {
-//       touchToClose: true,
-//       pageKey: config.navigation[0].key,
-//       pageTitle: config.navigation[0].title,
-//     }
-//   },
-//
-//   changePage: function(pageKey){
-//     var selectedItem = '';
-//     config.navigation.forEach( function(item){
-//       if ( item.key == pageKey ) {
-//         selectedItem = item;
-//       }
-//     });
-//
-//     if ( selectedItem ) {
-//       this.setState({
-//         pageKey: selectedItem.key,
-//         pageTitle: selectedItem.title,
-//         pageComponent: selectedItem.component,
-//       });
-//     }
-//   },
-//
-//   render: function() {
-//     var page = '';
-//     switch( this.state.pageKey ) {
-//       case 'home': page = <Home />; break;
-//       case 'news': page = <News />; break;
-//       case 'table': page = <Table />; break;
-//       case 'fixtures': page = <Fixtures />; break;
-//       case 'sponsors': page = <Sponsors />; break;
-//       case 'fenclub': page = <FenClub />; break;
-//     }
-//     //page = <News />
-//
-//     return (
-//       <SideMenu menu={<Menu changePage={this.changePage} />}
-//         touchToClose={this.state.touchToClose}>
-//         <View style={styles.main}>
-//           <View style={styles.header}>
-//             <MenuButton style={styles.menuButton}></MenuButton>
-//             <Text style={styles.headerTitle}>{this.state.pageTitle}</Text>
-//           </View>
-//           <View style={styles.content}>
-//             { page }
-//           </View>
-//         </View>
-//       </SideMenu>
-//     );
-//   }
-// });
 
 
 var styles = StyleSheet.create({
@@ -154,9 +102,6 @@ var styles = StyleSheet.create({
     height: 80,
     backgroundColor: config.color.primary,
     flexDirection: 'row',
-    shadowColor: '#000',
-    shadowOffset: {width:10, height:4},
-    shadowOpacity: 100,
     alignItems: 'center',
     paddingTop: 20,
   },
@@ -165,7 +110,7 @@ var styles = StyleSheet.create({
     color: '#fff',
   },
   content: {
-    flex: 1
+    flex: 1,
   },
 });
 

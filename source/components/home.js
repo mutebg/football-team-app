@@ -4,30 +4,55 @@ var {
   StyleSheet,
   Text,
   View,
+  ScrollView,
   Component,
 } = React;
 
-class Home extends Component {
+var config = require('../config')
+var GameRow = require('./gamerow');
+var NewsRow = require('./newsrow');
 
+class Home extends Component {
   render() {
+    var nextGame = {
+      logoA: config.team_logo,
+      logoB: 'http://img2.sportal.bg/uploads/statistics/team_logo_png/00000396.png',
+      teamA: config.team_name,
+      teamB: 'Дунав Руси  ',
+      date: '20.10.2015',
+      hour: '20:00',
+    }
+
+    var lastNews = {
+      title: '„Нефтохимик“ победи „Звездичка“',
+      date: '27.09.2015',
+      image: 'http://neftochimic.com/wp-content/uploads/2015/09/IMG_2872-300x200.jpg',
+    }
+
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.text}>
-          Home
-        </Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <GameRow game={nextGame} />
+        <Text style={styles.title}>Новини</Text>
+        <NewsRow news={lastNews} />
+        <Text style={styles.title}>Видео</Text>
+        <GameRow game={nextGame} />
+      </ScrollView>
     );
   }
 };
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 0,
   },
-  text: {
-    fontSize: 30
+  title: {
+    fontSize: 16,
+    paddingLeft: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: config.color.primary,
+    color: '#fff',
   }
 });
 

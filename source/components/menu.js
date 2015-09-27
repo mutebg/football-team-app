@@ -26,6 +26,7 @@ class Menu extends Component {
     this.state = {
       menuKey: 'table',
       menuItems: config.navigation,
+      menuItemsFooter: config.navigation_footer,
     }
   }
 
@@ -35,26 +36,28 @@ class Menu extends Component {
     this.props.changePage(e.key);
   }
 
-  render() {
-    var nav = this.state.menuItems.map( item => {
-      var boundClick = this.handlePress.bind(this, item);
-      var iconName = 'material|' + item.icon;
-      return(
-        <TouchableOpacity onPress={boundClick} key={item.key}>
-          <View style={styles.item}>
-            <Icon
-              name={iconName}
-              size={24}
-              color='#656565'
-              style={styles.itemIcon}
-            />
-            <View style={styles.itemView}>
-              <Text style={styles.itemText}>{item.title}</Text>
-            </View>
+  renderMenuItem(item) {
+    var boundClick = this.handlePress.bind(this, item);
+    var iconName = 'material|' + item.icon;
+    return(
+      <TouchableOpacity onPress={boundClick} key={item.key}>
+        <View style={styles.item}>
+          <Icon
+            name={iconName}
+            size={24}
+            color='#656565'
+            style={styles.itemIcon}
+          />
+          <View style={styles.itemView}>
+            <Text style={styles.itemText}>{item.title}</Text>
           </View>
-        </TouchableOpacity>
-      )
-    });
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  render() {
+    var menu = this.state.menuItems.map( this.renderMenuItem, this );
 
     return (
       <ScrollView style={styles.menu}>
@@ -66,9 +69,7 @@ class Menu extends Component {
             <Text>Бургас</Text>
           </View>
         </View>
-
-        { nav }
-
+        <View style={styles.mainMenu}>{ menu }</View>
       </ScrollView>
     )
   }
