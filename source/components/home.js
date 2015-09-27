@@ -4,11 +4,12 @@ var {
   StyleSheet,
   Text,
   View,
+  Component,
 } = React;
 
-var Home = React.createClass({
+class Home extends Component {
 
-  render: function() {
+  render() {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
@@ -16,8 +17,8 @@ var Home = React.createClass({
         </Text>
       </View>
     );
-  },
-});
+  }
+};
 
 var styles = StyleSheet.create({
   container: {

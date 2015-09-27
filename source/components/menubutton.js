@@ -1,20 +1,21 @@
 var React = require('react-native');
 var { Icon } = require('react-native-icons');
-
 var {
   StyleSheet,
   TouchableOpacity,
+  Component,
 } = React;
 
-var MenuButton = React.createClass({
-  handlePress: function(e) {
+class MenuButton extends Component{
+
+  handlePress(e) {
     this.context.menuActions.toggle();
     if (this.props.onPress) {
       this.props.onPress(e);
     }
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <TouchableOpacity onPress={this.handlePress.bind(this)} >
           <Icon
@@ -26,7 +27,7 @@ var MenuButton = React.createClass({
       </TouchableOpacity>
     );
   }
-});
+};
 
 MenuButton.contextTypes = {
   menuActions: React.PropTypes.object.isRequired

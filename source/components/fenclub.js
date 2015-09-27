@@ -4,10 +4,11 @@ var {
   StyleSheet,
   Text,
   View,
+  Component,
 } = React;
 
-var FenClub = React.createClass({
-  render: function() {
+class FenClub extends Component {
+  render() {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
@@ -15,8 +16,8 @@ var FenClub = React.createClass({
         </Text>
       </View>
     );
-  },
-});
+  }
+};
 
 var styles = StyleSheet.create({
   container: {

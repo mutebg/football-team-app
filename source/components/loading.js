@@ -1,28 +1,25 @@
 var React = require('react-native');
+var config = require('../config');
 var {
   Image,
   StyleSheet,
   Text,
   View,
+  Component,
 } = React;
 
-var config = require('../config');
+class Loading extends Component {
 
-var Loading = React.createClass({
-
-  render: function() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>
-          Зареждане
-        </Text>
-        <Image style={styles.logo}
-          source={{uri: config.app.logo }}/>
-      </View>
-    );
-  },
-
-});
+  render() {
+    return (<View style={styles.container}>
+      <Text style={styles.text}>
+        Зареждане
+      </Text>
+      <Image style={styles.logo}
+        source={{uri: config.app.logo }}/>
+    </View>)
+  }
+}
 
 var styles = StyleSheet.create({
   container: {

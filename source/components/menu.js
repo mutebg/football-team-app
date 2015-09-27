@@ -13,28 +13,30 @@ const {
   Image,
   Text,
   TouchableOpacity,
+  Component,
 } = React;
 
 
 
 const window = Dimensions.get('window');
 
-var Menu = React.createClass({
-  getInitialState: function() {
-    return {
+class Menu extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       menuKey: 'table',
       menuItems: config.navigation,
     }
-  },
+  }
 
-  handlePress: function(e) {
+  handlePress(e) {
     this.context.menuActions.close();
     this.setState({menuKey: e.key});
     this.props.changePage(e.key);
-  },
+  }
 
-  render: function() {
-    var nav = this.state.menuItems.map( function(item) {
+  render() {
+    var nav = this.state.menuItems.map( item => {
       var boundClick = this.handlePress.bind(this, item);
       var iconName = 'material|' + item.icon;
       return(
@@ -52,7 +54,7 @@ var Menu = React.createClass({
           </View>
         </TouchableOpacity>
       )
-    }, this);
+    });
 
     return (
       <ScrollView style={styles.menu}>
@@ -68,9 +70,9 @@ var Menu = React.createClass({
         { nav }
 
       </ScrollView>
-    );
+    )
   }
-});
+}
 
 Menu.contextTypes = {
   menuActions: React.PropTypes.object.isRequired
@@ -94,7 +96,7 @@ var styles = StyleSheet.create({
   logoTitle: {
     flex: 1,
     justifyContent: 'center',
-    height: 40,
+    height: 60,
     textAlign: 'left',
     paddingLeft: 15,
   },

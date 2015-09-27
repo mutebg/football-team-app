@@ -5,33 +5,35 @@ var {
   StyleSheet,
   Text,
   View,
-  Component
+  Component,
 } = React;
 
 var config = require('../config');
 var Loading = require('../components/loading');
 
-var Fixtures = React.createClass({
-  getInitialState: function() {
-    return {
+
+class Fixtures extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
       loaded: false,
-    };
-  },
+    }
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.fetchData();
-  },
+  }
 
-  fetchData: function() {
+  fetchData() {
     fetch( config.API.fixtures )
       .then((response) => response.json())
       .then((responseData) => {
 
         var formatedData = [];
-        responseData.feed.entry.forEach( function(item){
+        responseData.feed.entry.forEach( item => {
           var row = {
             round: item['gsx$round']['$t'],
             team: item['gsx$team']['$t'],
@@ -44,16 +46,16 @@ var Fixtures = React.createClass({
           formatedData.push(row);
         });
 
-
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(formatedData),
           loaded: true,
         });
       })
       .done();
-  },
+  }
 
-  render: function() {
+
+  render() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
@@ -64,15 +66,14 @@ var Fixtures = React.createClass({
         renderRow={this.renderFixtures}
       />
     );
-  },
+  }
 
-  renderLoadingView: function() {
-    return (
-      <Loading />
-    );
-  },
+  renderLoadingView() {
+    return (<Loading />)
+  }
 
-  renderFixtures: function(row) {
+
+  renderFixtures(row) {
 
     if ( row.home ) {
       teamA = config.team_name;
@@ -131,8 +132,14 @@ var Fixtures = React.createClass({
         </View>
       </View>
     );
-  },
-});
+  }
+}
+
+
+
+
+
+
 
 var teamRowHeight = 30;
 

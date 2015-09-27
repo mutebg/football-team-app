@@ -5,32 +5,34 @@ var {
   Text,
   View,
   ListView,
+  Component,
 } = React;
 
 var config = require('../config');
 var Loading = require('../components/loading');
 
-var News = React.createClass({
-  getInitialState: function() {
-    return {
+class News extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
       loaded: false,
-    };
-  },
+    }
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.fetchData();
-  },
+  }
 
-  fetchData: function() {
+  fetchData() {
     fetch( config.API.news )
       .then((response) => response.json())
       .then((responseData) => {
 
         var formatedData = [];
-        responseData.feed.entry.forEach( function(item){
+        responseData.feed.entry.forEach( item => {
           var row = {
             title: item['gsx$title']['$t'],
             image: item['gsx$image']['$t'],
@@ -40,16 +42,15 @@ var News = React.createClass({
           formatedData.push(row);
         });
 
-
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows( formatedData ),
           loaded: true,
         });
       })
       .done();
-  },
+  }
 
-  render: function() {
+  render() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
@@ -60,16 +61,15 @@ var News = React.createClass({
         renderRow={this.renderNews}
       />
     );
-  },
+  }
 
-  renderLoadingView: function() {
+  renderLoadingView() {
     return (
       <Loading />
     );
-  },
+  }
 
-  renderNews: function(row) {
-
+  renderNews(row) {
     var image;
     if ( row.image ) {
       image = <Image source={{uri: row.image}} style={styles.image} />
@@ -85,8 +85,87 @@ var News = React.createClass({
 
       </View>
     );
-  },
-});
+  }
+}
+
+
+// var News = React.createClass({
+//   getInitialState: function() {
+//     return {
+//       dataSource: new ListView.DataSource({
+//         rowHasChanged: (row1, row2) => row1 !== row2,
+//       }),
+//       loaded: false,
+//     };
+//   },
+//
+//   componentDidMount: function() {
+//     this.fetchData();
+//   },
+//
+//   fetchData: function() {
+//     fetch( config.API.news )
+//       .then((response) => response.json())
+//       .then((responseData) => {
+//
+//         var formatedData = [];
+//         responseData.feed.entry.forEach( function(item){
+//           var row = {
+//             title: item['gsx$title']['$t'],
+//             image: item['gsx$image']['$t'],
+//             date: item['gsx$date']['$t'],
+//             link: item['gsx$link']['$t'],
+//           }
+//           formatedData.push(row);
+//         });
+//
+//
+//         this.setState({
+//           dataSource: this.state.dataSource.cloneWithRows( formatedData ),
+//           loaded: true,
+//         });
+//       })
+//       .done();
+//   },
+//
+//   render: function() {
+//     if (!this.state.loaded) {
+//       return this.renderLoadingView();
+//     }
+//
+//     return (
+//       <ListView
+//         dataSource={this.state.dataSource}
+//         renderRow={this.renderNews}
+//       />
+//     );
+//   },
+//
+//   renderLoadingView: function() {
+//     return (
+//       <Loading />
+//     );
+//   },
+//
+//   renderNews: function(row) {
+//
+//     var image;
+//     if ( row.image ) {
+//       image = <Image source={{uri: row.image}} style={styles.image} />
+//     } else {
+//       image = <Image source={{uri: config.app.logo }} style={styles.image} />
+//     }
+//
+//     return (
+//       <View style={styles.row}>
+//         {image}
+//         <Text style={styles.title}>{row.title}</Text>
+//         <Text style={styles.date}>{row.date}</Text>
+//
+//       </View>
+//     );
+//   },
+// });
 
 
 var styles = StyleSheet.create({

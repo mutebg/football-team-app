@@ -5,32 +5,35 @@ var {
   Text,
   View,
   ListView,
+  Component,
 } = React;
 
 var config = require('../config');
 var Loading = require('../components/loading');
 
-var Sponsors = React.createClass({
-  getInitialState: function() {
-    return {
+class Sponsors extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
       loaded: false,
-    };
-  },
+    }
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.fetchData();
-  },
+  }
 
-  fetchData: function() {
+  fetchData() {
     fetch( config.API.sponsors )
       .then((response) => response.json())
       .then((responseData) => {
 
         var formatedData = [];
-        responseData.feed.entry.forEach( function(item){
+        responseData.feed.entry.forEach( item => {
           var row = {
             name: item['gsx$name']['$t'],
             banner: item['gsx$banner']['$t'],
@@ -39,16 +42,15 @@ var Sponsors = React.createClass({
           formatedData.push(row);
         });
 
-
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows( formatedData ),
           loaded: true,
         });
       })
       .done();
-  },
+  }
 
-  render: function() {
+  render() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
@@ -59,15 +61,15 @@ var Sponsors = React.createClass({
         renderRow={this.renderSponsors}
       />
     );
-  },
+  }
 
-  renderLoadingView: function() {
+  renderLoadingView() {
     return (
       <Loading />
     );
-  },
+  }
 
-  renderSponsors: function(row) {
+  renderSponsors(row) {
     return (
       <View style={styles.row}>
         <Text style={styles.name}>{row.name}</Text>
@@ -77,9 +79,8 @@ var Sponsors = React.createClass({
         />
       </View>
     );
-  },
-});
-
+  }
+}
 
 var styles = StyleSheet.create({
   row: {

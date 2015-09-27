@@ -5,32 +5,35 @@ var {
   StyleSheet,
   Text,
   View,
+  Component,
 } = React;
 
 var config = require('../config');
 var Loading = require('../components/loading');
 
-var Table = React.createClass({
-  getInitialState: function() {
-    return {
+class Table extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
       loaded: false,
-    };
-  },
+    }
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.fetchData();
-  },
+  }
 
-  fetchData: function() {
+  fetchData() {
     fetch( config.API.standing )
       .then((response) => response.json())
       .then((responseData) => {
 
         var formatedData = [config.standing_header];
-        responseData.feed.entry.forEach( function(item){
+        responseData.feed.entry.forEach( item => {
           var row = {
             position: item['gsx$position']['$t'],
             team: item['gsx$team']['$t'],
@@ -48,9 +51,9 @@ var Table = React.createClass({
         });
       })
       .done();
-  },
+  }
 
-  render: function() {
+  render() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
@@ -61,15 +64,15 @@ var Table = React.createClass({
         renderRow={this.renderTable}
       />
     );
-  },
+  }
 
-  renderLoadingView: function() {
+  renderLoadingView() {
     return (
       <Loading />
     );
-  },
+  }
 
-  renderTable: function(row, arg, index) {
+  renderTable(row, arg, index) {
     var addedStyle = {};
     if ( index == 0) {
       addedStyle = styles.tableHeader;
@@ -87,8 +90,89 @@ var Table = React.createClass({
         <Text style={[styles.cell, addedStyle]}>{row.points}</Text>
       </View>
     );
-  },
-});
+  }
+}
+
+//
+// var Table = React.createClass({
+//   getInitialState: function() {
+//     return {
+//       dataSource: new ListView.DataSource({
+//         rowHasChanged: (row1, row2) => row1 !== row2,
+//       }),
+//       loaded: false,
+//     };
+//   },
+//
+//   componentDidMount: function() {
+//     this.fetchData();
+//   },
+//
+//   fetchData: function() {
+//     fetch( config.API.standing )
+//       .then((response) => response.json())
+//       .then((responseData) => {
+//
+//         var formatedData = [config.standing_header];
+//         responseData.feed.entry.forEach( function(item){
+//           var row = {
+//             position: item['gsx$position']['$t'],
+//             team: item['gsx$team']['$t'],
+//             games: item['gsx$games']['$t'],
+//             ga: item['gsx$ga']['$t'],
+//             points: item['gsx$points']['$t'],
+//           }
+//           formatedData.push(row);
+//         });
+//
+//
+//         this.setState({
+//           dataSource: this.state.dataSource.cloneWithRows( formatedData ),
+//           loaded: true,
+//         });
+//       })
+//       .done();
+//   },
+//
+//   render: function() {
+//     if (!this.state.loaded) {
+//       return this.renderLoadingView();
+//     }
+//
+//     return (
+//       <ListView
+//         dataSource={this.state.dataSource}
+//         renderRow={this.renderTable}
+//       />
+//     );
+//   },
+//
+//   renderLoadingView: function() {
+//     return (
+//       <Loading />
+//     );
+//   },
+//
+//   renderTable: function(row, arg, index) {
+//     var addedStyle = {};
+//     if ( index == 0) {
+//       addedStyle = styles.tableHeader;
+//     }
+//
+//     if ( row.team.indexOf( config.team_name ) >= 0 ) {
+//       addedStyle = styles.tableActive;
+//     }
+//
+//     return (
+//       <View style={[styles.row, addedStyle ]}>
+//         <Text style={[styles.name, addedStyle]}>{row.position} {row.team}</Text>
+//         <Text style={[styles.cell, addedStyle]}>{row.games}</Text>
+//         <Text style={[styles.cell, styles.cell_ga ,addedStyle]}>{row.ga}</Text>
+//         <Text style={[styles.cell, addedStyle]}>{row.points}</Text>
+//       </View>
+//     );
+//   },
+// });
 
 var styles = StyleSheet.create({
   row: {
