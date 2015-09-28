@@ -11,12 +11,9 @@ var {
 var config = require('../config');
 
 class NewsRow extends Component {
+
   constructor(props) {
     super(props);
-  }
-
-  handlePress() {
-    
   }
 
   render() {
@@ -29,7 +26,7 @@ class NewsRow extends Component {
     }
 
     return (
-      <TouchableOpacity onPress={this.handlePress.bind(this)} >
+      <TouchableOpacity onPress={row.onPress} >
         <View style={styles.row}>
           {image}
           <Text style={styles.title}>{row.title}</Text>

@@ -8,8 +8,25 @@ var {
 
 class MenuButton extends Component{
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      icon: 'material|menu'
+    };
+  }
+
+  componentDidMount() {
+    if ( this.props.icon ) {
+      this.setState({
+        icon: 'material|' + this.props.icon
+      })
+    }
+  }
+
   handlePress(e) {
-    this.context.menuActions.toggle();
+    if ( this.props.icon == 'menu' || !this.props.icon ) {
+      this.context.menuActions.toggle();
+    }
     if (this.props.onPress) {
       this.props.onPress(e);
     }
@@ -19,7 +36,7 @@ class MenuButton extends Component{
     return (
       <TouchableOpacity onPress={this.handlePress.bind(this)} >
           <Icon
-            name='material|menu'
+            name={this.state.icon}
             size={32}
             color='#ffffff'
             style={styles.menuButton}

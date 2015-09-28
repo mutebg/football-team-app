@@ -35,6 +35,13 @@ class News extends Component {
             image: item['gsx$image']['$t'],
             date: item['gsx$date']['$t'],
             link: item['gsx$link']['$t'],
+            onPress: () => {
+              this.props.navigator.push({
+                  title: 'Новини',
+                  slug: '1',
+                  name: 'news-details',
+              });
+            }
           }
           formatedData.push(row);
         });

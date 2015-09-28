@@ -33,14 +33,22 @@ class Games extends Component {
         var offset = 0;
         var formatedData = [];
         responseData.feed.entry.forEach( (item, index )=> {
+          var round = item['gsx$round']['$t'];
           var row = {
-            round: item['gsx$round']['$t'],
+            round: round,
             team: item['gsx$team']['$t'],
             date: item['gsx$date']['$t'].split('-')[0],
             hour: item['gsx$date']['$t'].split('-')[1],
             result: item['gsx$result']['$t'],
             home: item['gsx$home']['$t'],
             logo: item['gsx$logo']['$t'],
+            onPress: () => {
+              this.props.navigator.push({
+                  title: round + ' кръг' ,
+                  slug: round,
+                  name: 'game-details',
+              });
+            }
           }
           formatedData.push(row);
 

@@ -16,15 +16,11 @@ class GameRow extends Component {
     super(props);
   }
 
-  handlePress() {
-
-  }
-
   render() {
     var row = this.props.game;
 
     return (
-      <TouchableOpacity onPress={this.handlePress.bind(this)} >
+      <TouchableOpacity onPress={row.onPress}>
         <View style={styles.fixtureRow}>
           <View style={styles.leftSide}>
             <View style={styles.team}>

@@ -11,6 +11,7 @@ var {
   View,
   Text,
   ScrollView,
+  Navigator,
   Component,
 } = React;
 
@@ -33,6 +34,55 @@ var Settings = require('./source/components/settings');
 var NewsDetails = require('./source/components/newsdetails');
 var GameDetails = require('./source/components/gamedetails');
 
+var _navigator;
+var RouteMapper = function (route, navigationOperations, onComponentRef) {
+  _navigator = navigationOperations;
+
+  var detailsPage = false;
+  var page;
+  switch( route.name ) {
+    case 'home': page = <Home navigator={navigationOperations} />; break;
+    case 'news': page = <News navigator={navigationOperations} />; break;
+    case 'table': page = <Table />; break;
+    case 'games': page = <Games navigator={navigationOperations} />; break;
+    case 'sponsors': page = <Sponsors />; break;
+    case 'fenclub': page = <FenClub />; break;
+    case 'settings': page = <Settings />; break;
+    case 'game-details': page =<GameDetails navigator={navigationOperations}/>; detailsPage = true; break;
+    case 'news-details': page =<NewsDetails navigator={navigationOperations}/>; detailsPage = true; break;
+  }
+
+
+  //base component
+  if ( ! detailsPage ) {
+    return (
+      <View style={styles.main}>
+        <View style={styles.header}>
+          <MenuButton style={styles.menuButton} icon="menu"></MenuButton>
+          <Text style={styles.headerTitle}>{route.title}</Text>
+        </View>
+        <View style={styles.content}>
+          { page }
+        </View>
+      </View>
+    );
+
+  //details component
+  } else {
+    return (
+      <View style={styles.main}>
+        <View style={styles.header}>
+          <MenuButton style={styles.menuButton} icon="arrow-left" onPress={navigationOperations.pop}></MenuButton>
+          <Text style={styles.headerTitle}>{route.title}</Text>
+        </View>
+        <View style={styles.content}>
+          { page }
+        </View>
+      </View>
+    );
+  }
+}
+
 class App extends Component {
 
   constructor(props) {
@@ -53,38 +103,23 @@ class App extends Component {
     });
 
     if ( selectedItem ) {
-      this.setState({
-        pageKey: selectedItem.key,
-        pageTitle: selectedItem.title,
-        pageComponent: selectedItem.component,
+      _navigator.push({
+        title: selectedItem.title,
+        name: selectedItem.key,
       });
     }
   }
 
   render() {
-    var page = '';
-    switch( this.state.pageKey ) {
-      case 'home': page = <Home />; break;
-      case 'news': page = <News />; break;
-      case 'table': page = <Table />; break;
-      case 'games': page = <Games />; break;
-      case 'sponsors': page = <Sponsors />; break;
-      case 'fenclub': page = <FenClub />; break;
-      case 'settings': page = <Settings />; break;
-    }
-
+    var initialRoute = {name: 'home', title: 'Welcome'};
     return (
       <SideMenu menu={<Menu changePage={this.changePage.bind(this)} />}
         touchToClose={this.state.touchToClose}>
-        <View style={styles.main}>
-          <View style={styles.header}>
-            <MenuButton style={styles.menuButton}></MenuButton>
-            <Text style={styles.headerTitle}>{this.state.pageTitle}</Text>
-          </View>
-          <View style={styles.content}>
-            { page }
-          </View>
-        </View>
+        <Navigator
+          style={styles.container}
+          initialRoute={initialRoute}
+          configureScene={() => Navigator.SceneConfigs.FloatFromRight }
+          renderScene={RouteMapper} />
       </SideMenu>
     );
   }
