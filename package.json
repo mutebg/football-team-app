@@ -6,8 +6,13 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
+    "events": "^1.0.2",
+    "flux": "^2.1.1",
+    "keymirror": "^0.1.1",
+    "object-assign": "^1.0.0",
     "react-native": "^0.11.0",
     "react-native-icons": "^0.4.0",
-    "react-native-side-menu": "^0.14.0"
+    "react-native-side-menu": "^0.14.0",
+    "lodash": "^3.10.1"
   }
 }

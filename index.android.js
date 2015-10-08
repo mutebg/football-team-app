@@ -13,6 +13,7 @@ var {
   ScrollView,
   Navigator,
   Component,
+  BackAndroid,
 } = React;
 
 var config = require('./source/config');
@@ -33,6 +34,22 @@ var Settings = require('./source/components/settings');
 
 var NewsDetails = require('./source/components/newsdetails');
 var GameDetails = require('./source/components/gamedetails');
+
+//android only
+BackAndroid.addEventListener('hardwareBackPress', () => {
+  if (_navigator && _navigator.getCurrentRoutes().length > 1) {
+    _navigator.pop();
+    return true;
+  }
+  return false;
+});
+
+function popLastRoute() {
+  if (_navigator && _navigator.getCurrentRoutes().length > 0) {
+    _navigator.pop();
+  }
+}
+
 
 var _navigator;
 var RouteMapper = function (route, navigationOperations, onComponentRef) {
@@ -103,6 +120,7 @@ class App extends Component {
     });
 
     if ( selectedItem ) {
+      popLastRoute();
       _navigator.push({
         title: selectedItem.title,
         name: selectedItem.key,

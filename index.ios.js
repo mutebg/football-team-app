@@ -34,6 +34,12 @@ var Settings = require('./source/components/settings');
 var NewsDetails = require('./source/components/newsdetails');
 var GameDetails = require('./source/components/gamedetails');
 
+function popLastRoute() {
+  if (_navigator && _navigator.getCurrentRoutes().length > 0) {
+    _navigator.pop();
+  }
+}
+
 var _navigator;
 var RouteMapper = function (route, navigationOperations, onComponentRef) {
   _navigator = navigationOperations;
@@ -103,7 +109,7 @@ class App extends Component {
     });
 
     if ( selectedItem ) {
-      _navigator.push({
+      _navigator.replace({
         title: selectedItem.title,
         name: selectedItem.key,
       });

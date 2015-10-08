@@ -10,6 +10,8 @@ var {
 
 var config = require('../config');
 var Loading = require('../components/loading');
+var TableStore = require('../stores/tablestore');
+var TableActions = require('../actions/tableactions');
 
 class Table extends Component {
 
@@ -24,34 +26,47 @@ class Table extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    TableStore.addChangeListener(this._onChange.bind(this));
+    TableActions.load();
   }
 
-  fetchData() {
-    fetch( config.API.standing )
-      .then((response) => response.json())
-      .then((responseData) => {
-
-        var formatedData = [config.standing_header];
-        responseData.feed.entry.forEach( item => {
-          var row = {
-            position: item['gsx$position']['$t'],
-            team: item['gsx$team']['$t'],
-            games: item['gsx$games']['$t'],
-            ga: item['gsx$ga']['$t'],
-            points: item['gsx$points']['$t'],
-          }
-          formatedData.push(row);
-        });
-
-
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows( formatedData ),
-          loaded: true,
-        });
-      })
-      .done();
+  componentWillUnmount() {
+    TableStore.removeChangeListener(this._onChange);
   }
+
+  _onChange() {
+    var table = TableStore.get();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows( table ),
+      loaded: true,
+    });
+  }
+
+  // fetchData() {
+  //   fetch( config.API.standing )
+  //     .then((response) => response.json())
+  //     .then((responseData) => {
+  //
+  //       var formatedData = [config.standing_header];
+  //       responseData.feed.entry.forEach( item => {
+  //         var row = {
+  //           position: item['gsx$position']['$t'],
+  //           team: item['gsx$team']['$t'],
+  //           games: item['gsx$games']['$t'],
+  //           ga: item['gsx$ga']['$t'],
+  //           points: item['gsx$points']['$t'],
+  //         }
+  //         formatedData.push(row);
+  //       });
+  //
+  //
+  //       this.setState({
+  //         dataSource: this.state.dataSource.cloneWithRows( formatedData ),
+  //         loaded: true,
+  //       });
+  //     })
+  //     .done();
+  // }
 
   render() {
     if (!this.state.loaded) {

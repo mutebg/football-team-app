@@ -16,6 +16,11 @@ class NewsRow extends Component {
     super(props);
   }
 
+  onPress() {
+    console.log(this.props.news);
+    this.props.openNews(this.props.news.id);
+  }
+
   render() {
     var row = this.props.news;
     var image;
@@ -25,8 +30,9 @@ class NewsRow extends Component {
       image = <Image source={{uri: config.app.logo }} style={styles.image} />
     }
 
+
     return (
-      <TouchableOpacity onPress={row.onPress} >
+      <TouchableOpacity onPress={row.onPress}>
         <View style={styles.row}>
           {image}
           <Text style={styles.title}>{row.title}</Text>

@@ -7,6 +7,9 @@ var {
 var config = require('../config');
 var Loading = require('./loading');
 var NewsRow = require('./newsrow');
+var NewsStore = require('../stores/newsstore');
+var NewsActions = require('../actions/newsactions');
+
 
 class News extends Component {
   constructor(props) {
@@ -20,39 +23,52 @@ class News extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    NewsStore.addChangeListener(this._onChange.bind(this));
+    NewsActions.loadList();
   }
 
-  fetchData() {
-    fetch( config.API.news )
-      .then((response) => response.json())
-      .then((responseData) => {
-
-        var formatedData = [];
-        responseData.feed.entry.forEach( item => {
-          var row = {
-            title: item['gsx$title']['$t'],
-            image: item['gsx$image']['$t'],
-            date: item['gsx$date']['$t'],
-            link: item['gsx$link']['$t'],
-            onPress: () => {
-              this.props.navigator.push({
-                  title: 'Новини',
-                  slug: '1',
-                  name: 'news-details',
-              });
-            }
-          }
-          formatedData.push(row);
-        });
-
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows( formatedData ),
-          loaded: true,
-        });
-      })
-      .done();
+  componentWillUnmount() {
+    NewsStore.removeChangeListener(this._onChange);
   }
+
+  _onChange() {
+    var news = NewsStore.getList();
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows( news ),
+      loaded: true,
+    });
+  }
+
+  // fetchData() {
+  //   fetch( config.API.news )
+  //     .then((response) => response.json())
+  //     .then((responseData) => {
+  //
+  //       var formatedData = [];
+  //       responseData.feed.entry.forEach( item => {
+  //         var row = {
+  //           title: item['gsx$title']['$t'],
+  //           image: item['gsx$image']['$t'],
+  //           date: item['gsx$date']['$t'],
+  //           link: item['gsx$link']['$t'],
+  //           onPress: () => {
+  //             this.props.navigator.push({
+  //                 title: 'Новини',
+  //                 slug: '1',
+  //                 name: 'news-details',
+  //             });
+  //           }
+  //         }
+  //         formatedData.push(row);
+  //       });
+  //
+  //       this.setState({
+  //         dataSource: this.state.dataSource.cloneWithRows( formatedData ),
+  //         loaded: true,
+  //       });
+  //     })
+  //     .done();
+  // }
 
   render() {
     if (!this.state.loaded) {
@@ -62,7 +78,7 @@ class News extends Component {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={this.renderNews}
+        renderRow={this.renderNews.bind(this)}
       />
     );
   }
@@ -74,6 +90,15 @@ class News extends Component {
   }
 
   renderNews(row) {
+    var navigator = this.props.navigator;
+    row.onPress = () => {
+      navigator.push({
+         title: 'Новини',
+         slug: row.id,
+         name: 'news-details',
+       });
+    };
+
     return (
       <NewsRow news={row} />
     );
