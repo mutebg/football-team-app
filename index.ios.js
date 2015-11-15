@@ -29,6 +29,7 @@ var News = require('./source/components/news');
 var Sponsors = require('./source/components/sponsors');
 var Games = require('./source/components/games');
 var Table = require('./source/components/table');
+var Videos = require('./source/components/videos');
 var FenClub = require('./source/components/fenclub');
 var Settings = require('./source/components/settings');
 
@@ -53,6 +54,7 @@ var RouteMapper = function (route, navigationOperations, onComponentRef) {
     case 'table': page = <Table />; break;
     case 'games': page = <Games navigator={navigationOperations} />; break;
     case 'sponsors': page = <Sponsors />; break;
+    case 'videos': page = <Videos />; break;
     case 'fenclub': page = <FenClub />; break;
     case 'settings': page = <Settings />; break;
     case 'game-details': page =<GameDetails navigator={navigationOperations}/>; detailsPage = true; break;
@@ -118,7 +120,7 @@ class App extends Component {
   }
 
   render() {
-    var initialRoute = {name: 'home', title: 'Welcome'};
+    var initialRoute = {name: 'home', title: 'Начало'};
     var menu = <Menu changePage={this.changePage.bind(this)} />;
     return (
       <SideMenu menu={menu} touchToClose={this.state.touchToClose}>

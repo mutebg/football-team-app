@@ -7,9 +7,10 @@ var constants = {
   team_logo: 'http://img2.sportal.bg/uploads/statistics/team_logo_png/00000402.png',
   navigation: [
     { title: 'Начало',    key: 'home',      icon: 'home'},
-    { title: 'Програма',  key: 'games',  icon: 'assignment'},
+    { title: 'Програма',  key: 'games',     icon: 'assignment'},
     { title: 'Класиране', key: 'table',     icon: 'receipt'},
     { title: 'Новини',    key: 'news',      icon: 'developer-board'},
+    { title: 'Видео',     key: 'videos',    icon: 'collection-video'},
     { title: 'Фен Клуб',  key: 'fenclub',   icon: 'account-circle'},
     { title: 'Спонсори',  key: 'sponsors',  icon: 'gamepad'},
     { title: 'Настройки', key: 'settings',  icon: 'settings'},
@@ -26,7 +27,8 @@ var constants = {
     fixtures: 'http://localhost:3000/api/games',
     standing: 'http://localhost:3000/api/table',
     news:     'http://localhost:3000/api/news',
-    sponsors: 'https://spreadsheets.google.com/feeds/list/1iHrHLPHJcyeCxGha5Qj-KvgY6c3qxQa6erIVyX4-ioI/od6/public/values?alt=json',
+    sponsors: 'http://localhost:3000/api/sponsors',
+    videos:   'http://localhost:3000/api/videos',
   },
 
   color: {

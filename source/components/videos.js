@@ -1,21 +1,17 @@
 var React = require('react-native');
 var {
-  Image,
-  StyleSheet,
-  Text,
-  View,
   ListView,
   Component,
 } = React;
 
 var config = require('../config');
 var Loading = require('./loading');
+var VideoRow = require('./videorow');
 
 var Actions = require('../actions');
 var UtilsStore = require('../stores/utilsstore');
 
-
-class Sponsors extends Component {
+class Videos extends Component {
 
   constructor(props) {
     super(props);
@@ -23,9 +19,9 @@ class Sponsors extends Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
-      loaded: false,
+      loading: true,
     }
-    Actions.sponsorsFetch();
+    Actions.videosFetch();
   }
 
   componentDidMount() {
@@ -37,9 +33,8 @@ class Sponsors extends Component {
   }
 
   onChange(state) {
-    console.log('-------------', state);
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(state.sponsors),
+      dataSource: this.state.dataSource.cloneWithRows(state.videos),
       loading: state.loading,
     });
   }
@@ -52,7 +47,7 @@ class Sponsors extends Component {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={this.renderSponsors}
+        renderRow={this.renderVideo.bind(this)}
       />
     );
   }
@@ -63,32 +58,11 @@ class Sponsors extends Component {
     );
   }
 
-  renderSponsors(row) {
+  renderVideo(row) {
     return (
-      <View style={styles.row}>
-        <Text style={styles.name}>{row.name}</Text>
-        <Image
-          source={{uri: row.banner}}
-          style={styles.banner}
-        />
-      </View>
+      <VideoRow video={row} />
     );
   }
 }
 
-var styles = StyleSheet.create({
-  row: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomColor: config.color.border,
-    borderBottomWidth: 1,
-  },
-  banner: {
-    width: 150,
-    height: 40,
-    marginTop: 5,
-  }
-});
-
-module.exports = Sponsors;
+module.exports = Videos;

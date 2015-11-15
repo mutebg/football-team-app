@@ -8,7 +8,6 @@ class Actions {
       'homeFetchSuccess',
       'homeFetchFailed',
 
-
       //list of news
       'newsFetch',
       'newsFetchSuccess',
@@ -31,6 +30,16 @@ class Actions {
       'tableFetch',
       'tableFetchSuccess',
       'tableFetchFailed',
+
+      //fetch sponsors
+      'sponsorsFetch',
+      'sponsorsFetchSuccess',
+      'sponsorsFetchFailed',
+
+      //fetch videos
+      'videosFetch',
+      'videosFetchSuccess',
+      'videosFetchFailed',
     );
   }
 }
