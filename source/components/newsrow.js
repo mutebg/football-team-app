@@ -36,7 +36,7 @@ class NewsRow extends Component {
         <View style={styles.row}>
           {image}
           <Text style={styles.title}>{row.title}</Text>
-          <Text style={styles.date}>{row.date}</Text>
+          <Text style={styles.date}>{row.datetime}</Text>
         </View>
       </TouchableOpacity>
     );

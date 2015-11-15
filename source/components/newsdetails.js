@@ -9,9 +9,11 @@ var {
 } = React;
 
 var config = require('../config');
-var Loading = require('../components/loading');
+var Loading = require('./loading');
+
+var Actions = require('../actions');
 var NewsStore = require('../stores/newsstore');
-var NewsActions = require('../actions/newsactions');
+
 
 
 class NewsDetails extends Component {
@@ -19,35 +21,34 @@ class NewsDetails extends Component {
     super(props);
 
     var currentNavigation = this.props.navigator.getCurrentRoutes();
-    console.log( )
     var slug = currentNavigation[ currentNavigation.length - 1 ].slug;
 
     this.state = {
       slug: slug,
-      newsData: {},
-      loaded: false,
+      data: {},
+      loading: true,
     }
+
+    Actions.newsItemFetch(slug);
   }
 
   componentDidMount() {
-    NewsStore.addChangeListener(this._onChange.bind(this));
-    NewsActions.loadItem(this.state.slug);
+    NewsStore.listen(this.onChange.bind(this));
   }
 
   componentWillUnmount() {
-    NewsStore.removeChangeListener(this._onChange.bind(this));
+    NewsStore.unlisten(this.onChange.bind(this));
   }
 
-  _onChange() {
-    var newsData = NewsStore.getItem(this.state.slug);
+  onChange(state) {
     this.setState({
-      newsData: newsData,
-      loaded: true,
+      data: state.item,
+      loading: state.loading,
     });
   }
 
   render() {
-    if (!this.state.loaded) {
+    if (this.state.loading) {
       return this.renderLoadingView();
     }
 
@@ -61,7 +62,7 @@ class NewsDetails extends Component {
   }
 
   renderDetails() {
-    var news = this.state.newsData;
+    var news = this.state.data;
     var image;
     if ( news.image ) {
       image = <Image source={{uri: news.image}} style={styles.image} />
@@ -73,7 +74,7 @@ class NewsDetails extends Component {
       <ScrollView style={styles.row}>
         {image}
         <Text style={styles.title}>{news.title}</Text>
-        <Text style={styles.date}>{news.date}</Text>
+        <Text style={styles.date}>{news.datetime}</Text>
         <Text style={styles.text}>{news.text}</Text>
 
       </ScrollView>

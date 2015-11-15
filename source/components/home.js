@@ -9,35 +9,86 @@ var {
 } = React;
 
 var config = require('../config')
+var helpers = require('../helpers');
+var Loading = require('./loading');
 var GameRow = require('./gamerow');
 var NewsRow = require('./newsrow');
 
+var Actions = require('../actions');
+var HomeStore = require('../stores/homestore');
+
+
+
 class Home extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {},
+      loading: true,
+    }
+    Actions.homeFetch();
+  }
+
+  componentDidMount() {
+    HomeStore.listen(this.onChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    HomeStore.unlisten(this.onChange.bind(this));
+  }
+
+  onChange(state) {
+    console.log('----------------', state);
+    this.setState({
+      data: state.data,
+      loading: state.loading,
+    });
+  }
+
   render() {
-    var nextGame = {
-      logoA: config.team_logo,
-      logoB: 'http://img2.sportal.bg/uploads/statistics/team_logo_png/00000396.png',
-      teamA: config.team_name,
-      teamB: 'Дунав Руси  ',
-      date: '20.10.2015',
-      hour: '20:00',
+
+    if (this.state.loading) {
+      return this.renderLoadingView();
     }
 
-    var lastNews = {
-      title: '„Нефтохимик“ победи „Звездичка“',
-      date: '27.09.2015',
-      image: 'http://neftochimic.com/wp-content/uploads/2015/09/IMG_2872-300x200.jpg',
-    }
+    //next game
+    var nextGame = helpers.formatGame(this.state.data.next_game);
+    nextGame.onPress = () => {
+      navigator.push({
+         title: 'Програма',
+         slug: nextGame._id,
+         name: 'game-details',
+       });
+    };
+
+    //news
+    var news = this.state.data.news;
+    var navigator = this.props.navigator;
+    news.onPress = () => {
+      navigator.push({
+         title: 'Новини',
+         slug: news._id,
+         name: 'news-details',
+       });
+    };
+
 
 
     return (
       <ScrollView style={styles.container}>
         <GameRow game={nextGame} />
         <Text style={styles.title}>Новини</Text>
-        <NewsRow news={lastNews} />
+        <NewsRow news={this.state.data.news} />
         <Text style={styles.title}>Видео</Text>
         <GameRow game={nextGame} />
       </ScrollView>
+    );
+  }
+
+  renderLoadingView() {
+    return (
+      <Loading />
     );
   }
 };

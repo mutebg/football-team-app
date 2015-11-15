@@ -109,6 +109,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     height: teamRowHeight,
     textAlign: 'left',
+    overflow: 'hidden',
   },
   teamRes: {
     flex: 0,

@@ -11,42 +11,44 @@ var {
 var config = require('../config');
 var Loading = require('../components/loading');
 
+var Actions = require('../actions');
+var GamesStore = require('../stores/gamesstore');
 
 class GamesDetails extends Component {
   constructor(props) {
     super(props);
+
+    var currentNavigation = this.props.navigator.getCurrentRoutes();
+    var slug = currentNavigation[ currentNavigation.length - 1 ].slug;
+
     this.state = {
-      gameData: {},
-      loaded: false,
+      slug: slug,
+      data: {},
+      loading: true,
     }
+
+    Actions.gamesItemFetch(slug);
+
   }
 
   componentDidMount() {
-    this.fetchData();
+    GamesStore.listen(this.onChange.bind(this));
   }
 
-  fetchData() {
-    fetch( config.API.fixtures )
-      .then((response) => response.json())
-      .then((responseData) => {
+  componentWillUnmount() {
+    GamesStore.unlisten(this.onChange.bind(this));
+  }
 
-        var gameData = {
-          teamA: ' Нефтохимик',
-          teamB: 'Левски',
-          date: '25.07.2015 - 18:30',
-        }
-
-        this.setState({
-          gameData: gameData,
-          loaded: true,
-        });
-      })
-      .done();
+  onChange(state) {
+    this.setState({
+      data: state.item,
+      loading: state.loading,
+    });
   }
 
 
   render() {
-    if (!this.state.loaded) {
+    if (this.state.loading) {
       return this.renderLoadingView();
     }
 
@@ -59,7 +61,7 @@ class GamesDetails extends Component {
 
 
   renderGame() {
-    var game = this.state.gameData;
+    var game = this.state.data;
 
     return (
       <View style={styles.fixtureRow}>

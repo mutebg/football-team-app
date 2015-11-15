@@ -22,9 +22,10 @@ var constants = {
   },
 
   API: {
-    fixtures: 'https://spreadsheets.google.com/feeds/list/1UEa5Oto7Ykg5h8_8zEj-GX3UOEK48mJEZYci7EGtc4M/od6/public/values?alt=json',
-    standing: 'https://spreadsheets.google.com/feeds/list/14hGQlhumip9ubxHkm80MCxLsyTpxdeeKh0pFJkXEDIw/od6/public/values?alt=json',
-    news: 'https://spreadsheets.google.com/feeds/list/1AjrWXh83XL5TeVSV_eSnL6BPAB40GzQbES0-i3p7ty0/od6/public/values?alt=json',
+    home:     'http://localhost:3000/api/home',
+    fixtures: 'http://localhost:3000/api/games',
+    standing: 'http://localhost:3000/api/table',
+    news:     'http://localhost:3000/api/news',
     sponsors: 'https://spreadsheets.google.com/feeds/list/1iHrHLPHJcyeCxGha5Qj-KvgY6c3qxQa6erIVyX4-ioI/od6/public/values?alt=json',
   },
 

@@ -1,3 +1,4 @@
+
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -118,9 +119,9 @@ class App extends Component {
 
   render() {
     var initialRoute = {name: 'home', title: 'Welcome'};
+    var menu = <Menu changePage={this.changePage.bind(this)} />;
     return (
-      <SideMenu menu={<Menu changePage={this.changePage.bind(this)} />}
-        touchToClose={this.state.touchToClose}>
+      <SideMenu menu={menu} touchToClose={this.state.touchToClose}>
         <Navigator
           style={styles.container}
           initialRoute={initialRoute}
@@ -136,7 +137,7 @@ var styles = StyleSheet.create({
   main: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
   header: {
     flex: 0,
@@ -155,4 +156,4 @@ var styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('reactnativeproject', () => App);
+AppRegistry.registerComponent('naftamobile', () => App);

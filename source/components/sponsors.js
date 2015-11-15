@@ -9,7 +9,7 @@ var {
 } = React;
 
 var config = require('../config');
-var Loading = require('../components/loading');
+var Loading = require('./loading');
 
 class Sponsors extends Component {
 

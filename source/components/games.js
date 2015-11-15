@@ -4,12 +4,16 @@ var {
   Component,
 } = React;
 
-var config = require('../config');
-var Loading = require('../components/loading');
+var helpers = require('../helpers');
+var Loading = require('./loading');
 var GameRow = require('./gamerow');
+
+var Actions = require('../actions');
+var GamesStore = require('../stores/gamesstore');
 
 
 class Games extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -17,59 +21,29 @@ class Games extends Component {
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
       listOffset: 0,
-      loaded: false,
+      loading: true,
     }
+    Actions.gamesFetch();
   }
 
   componentDidMount() {
-    this.fetchData();
+    GamesStore.listen(this.onChange.bind(this));
   }
 
-  fetchData() {
-    fetch( config.API.fixtures )
-      .then((response) => response.json())
-      .then((responseData) => {
-
-        var offset = 0;
-        var formatedData = [];
-        responseData.feed.entry.forEach( (item, index )=> {
-          var round = item['gsx$round']['$t'];
-          var row = {
-            round: round,
-            team: item['gsx$team']['$t'],
-            date: item['gsx$date']['$t'].split('-')[0],
-            hour: item['gsx$date']['$t'].split('-')[1],
-            result: item['gsx$result']['$t'],
-            home: item['gsx$home']['$t'],
-            logo: item['gsx$logo']['$t'],
-            onPress: () => {
-              this.props.navigator.push({
-                  title: round + ' кръг' ,
-                  slug: round,
-                  name: 'game-details',
-              });
-            }
-          }
-          formatedData.push(row);
-
-          //calculate offset
-          if ( row.result.length < 2 && offset == 0 ) {
-            offset = index * 86; //height of gamerow
-          }
-        });
-
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(formatedData),
-          loaded: true,
-          listOffset: offset,
-        });
-      })
-      .done();
+  componentWillUnmount() {
+    GamesStore.unlisten(this.onChange.bind(this));
   }
 
+  onChange(state) {
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(state.list),
+      loading: state.loading,
+      listOffset: ( state.lastGameIndex * 86 ), // height of game row
+    });
+  }
 
   render() {
-    if (!this.state.loaded) {
+    if (this.state.loading) {
       return this.renderLoadingView();
     }
 
@@ -78,7 +52,7 @@ class Games extends Component {
         contentOffset={{ x: 0, y: this.state.listOffset }}
         scrollRenderAheadDistance={100}
         dataSource={this.state.dataSource}
-        renderRow={this.renderGames}
+        renderRow={this.renderGames.bind(this)}
         initialListSize={50}
       />
     );
@@ -89,26 +63,16 @@ class Games extends Component {
   }
 
   renderGames(row) {
+    var navigator = this.props.navigator;
+    row.onPress = () => {
+      navigator.push({
+         title: 'Програма',
+         slug: row.round,
+         name: 'game-details',
+       });
+    };
 
-    if ( row.home ) {
-      row.teamA = config.team_name;
-      row.teamB = row.team
-      row.logoA = config.team_logo;
-      row.logoB = row.logo
-    } else {
-      row.teamA = row.team
-      row.teamB = config.team_name;
-      row.logoA = row.logo;
-      row.logoB = config.team_logo;
-    }
-
-    if ( row.result.length > 2 ) {
-      row.resultA = parseInt( row.result.split(':')[0] );
-      row.resultB = parseInt( row.result.split(':')[1] );
-    } else {
-      row.resultA = '';
-      row.resultB = '';
-    }
+    var row = helpers.formatGame(row);
 
     return (
       <GameRow game={row} />

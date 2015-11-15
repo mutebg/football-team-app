@@ -1,34 +1,34 @@
 var alt = require('../alt');
 var Actions = require('../actions');
-var TableSource = require('../sources/tablesource');
+var HomeSource = require('../sources/homesource');
 
-class TableStore {
+class HomeStore {
 
   constructor(){
     this.state = {
-      list: [],
+      data: [],
       loading: false,
       error: false,
     };
 
-    this.registerAsync(TableSource);
+    this.registerAsync(HomeSource);
     this.bindListeners({
-      fetchList: Actions.tableFetch,
-      setList: Actions.tableFetchSuccess,
-      setError: Actions.tableFetchFailed,
+      fetchData: Actions.homeFetch,
+      setData: Actions.homeFetchSuccess,
+      setError: Actions.homeFetchFailed,
     });
   }
 
-  fetchList() {
+  fetchData() {
     this.setState({
       loading: true,
     })
-    this.getInstance().getList();
+    this.getInstance().getData();
   }
 
-  setList(list){
+  setData(data){
     this.setState({
-      list,
+      data,
       loading: false
     });
   }
@@ -41,4 +41,4 @@ class TableStore {
   }
 }
 
-module.exports = alt.createStore(TableStore);
+module.exports = alt.createStore(HomeStore);

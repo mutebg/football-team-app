@@ -1,26 +1,26 @@
 var alt = require('../alt');
 var Actions = require('../actions');
-var NewsSource = require('../sources/newssource');
+var GamesSource = require('../sources/gamessource');
 
-class NewsStore {
-
+class GamesStore {
   constructor(){
     this.state = {
       list: [],
       item: {},
       itemId: null,
+      lastGameIndex: 0,
       loading: false,
       error: false,
     };
 
-    this.registerAsync(NewsSource);
+    this.registerAsync(GamesSource);
     this.bindListeners({
-      fetchList: Actions.newsFetch,
-      setList: Actions.newsFetchSuccess,
-      setError: Actions.newsFetchFailed,
+      fetchList: Actions.gamesFetch,
+      setList:   Actions.gamesFetchSuccess,
+      setError:   Actions.gamesFetchFailed,
 
-      fetchItem: Actions.newsItemFetch,
-      setItem: Actions.newsItemFetchSuccess,
+      fetchItem: Actions.gamesItemFetch,
+      setItem: Actions.gamesItemFetchSuccess,
     });
   }
 
@@ -32,8 +32,17 @@ class NewsStore {
   }
 
   setList(list){
+    var lastGameIndex = 0;
+    if ( list.length > 0 ) {
+      list.forEach( (item, index) => {
+        if ( item.result.length < 2 && lastGameIndex == 0 ) {
+          lastGameIndex = index;
+        }
+      });
+    }
     this.setState({
       list,
+      lastGameIndex,
       loading: false
     });
   }
@@ -61,4 +70,4 @@ class NewsStore {
   }
 }
 
-module.exports = alt.createStore(NewsStore);
+module.exports = alt.createStore(GamesStore);

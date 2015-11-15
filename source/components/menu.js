@@ -3,9 +3,7 @@
 const React = require('react-native');
 const Dimensions = require('Dimensions');
 const config = require('../config');
-var { Icon } = require('react-native-icons');
-
-
+const { Icon } = require('react-native-icons');
 const {
   StyleSheet,
   ScrollView,
@@ -15,9 +13,6 @@ const {
   TouchableOpacity,
   Component,
 } = React;
-
-
-
 const window = Dimensions.get('window');
 
 class Menu extends Component {
@@ -59,7 +54,7 @@ class Menu extends Component {
   render() {
     var menu = this.state.menuItems.map( this.renderMenuItem, this );
 
-    return (
+     return (
       <ScrollView style={styles.menu}>
         <View style={styles.logoContainer}>
           <Image style={styles.logo}
@@ -71,7 +66,7 @@ class Menu extends Component {
         </View>
         <View style={styles.mainMenu}>{ menu }</View>
       </ScrollView>
-    )
+    );
   }
 }
 
@@ -83,11 +78,14 @@ var styles = StyleSheet.create({
   menu: {
     flex: 1,
     backgroundColor: '#EAEAEA',
+    width: window.width,
+    height: window.height,
   },
   logoContainer: {
     padding: 15,
     backgroundColor: '#fff',
     flexDirection: 'row',
+    flex: 1,
   },
   logo: {
     width: 60,
@@ -100,6 +98,10 @@ var styles = StyleSheet.create({
     height: 60,
     textAlign: 'left',
     paddingLeft: 15,
+  },
+  mainMenu: {
+    flex: 1,
+    justifyContent: 'center',
   },
   item: {
     paddingTop: 15,
